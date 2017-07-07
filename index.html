@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Google Maps JS API</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+  <style>
+    #map{
+      height: 500px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h4><i class="small material-icons" style="color:#64b5f6">room</i> My Google Map</h4>
+    <div id="map"></div>
+  </div>
+
+
+
+  <script>
+    function initMap() {
+
+      //set the Map Options
+      var options = {
+        zoom: 9,
+        center:{lat:34.01325, lng:-6.83255}
+      }
+
+      //create the Map
+      var map = new google.maps.Map(document.getElementById('map'), options)
+
+      //listen for click on map
+      google.maps.event.addListener(map,'click',
+      function(event){
+        addMarker({coords:event.latLng});
+      });
+
+      var markers = [
+        {
+          coords:{lat:34.26101,lng:-6.5802},
+          iconImg:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+          content:'<h3>This is kénitra :p </h3>'
+        },
+        {
+          coords:{lat:34.01325, lng:-6.83255}
+        },
+        {
+          coords:{lat:33.58831, lng:-7.61138},
+          content:'<h4>li kayn f Casa kayn bariz :p </h4>'
+        }
+
+      ];
+
+      for (var i = 0; i < markers.length; i++) {
+        addMarker(markers[i]);
+      }
+
+
+
+
+
+      //Add Marker function
+      function addMarker(props){
+        var marker = new google.maps.Marker({
+          position:props.coords,
+          map:map,
+          //icon:props.iconImg
+        });
+
+        // check for custom icon
+        if (props.iconImg) {
+          marker.setIcon(props.iconImg);
+        }
+
+        //check if there is a content
+        if (props.content) {
+          var infoWindow = new google.maps.InfoWindow({
+            content: props.content
+          });
+          marker.addListener('click', function(){
+            infoWindow.open(map,marker);
+          });
+        }
+      }
+
+
+      /*
+      //Create Marker sur Kenitra
+      var marker = new google.maps.Marker({
+        position:{lat:34.26101,lng:-6.5802},
+        map:map,
+        icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+      });
+
+      var infoWindow = new google.maps.InfoWindow({
+        content: 'HELLO'
+      });
+      marker.addListener('click', function(){
+        infoWindow.open(map,marker);
+      });
+      */
+
+    }
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoJqoidVOqTd1HSq8rLhrscSWX-EzoQEQ&callback=initMap">
+  </script>
+</body>
+</html>
